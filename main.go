@@ -403,9 +403,9 @@ func (g *Game) Draw(screen *ebiten.Image) {
 
 		drawTextCenter("MAXWELL'S DEMON", 170, largeFont)
 		drawTextCenter("CLICK TO START", 290, mediumFont)
-		licenseTexts := []string{"FONT: Press Start 2P by CodeMan38", "SOUND: MaouDamashii"}
+		licenseTexts := []string{"CREATOR: NAOKI TSUJIO", "FONT: Press Start 2P by CodeMan38", "SOUND: MaouDamashii"}
 		for i, s := range licenseTexts {
-			drawTextCenter(s, 415+i*int(smallFont.FaceOptions.Size*1.7), smallFont)
+			drawTextCenter(s, 400+i*int(smallFont.FaceOptions.Size*1.8), smallFont)
 		}
 	case GameModeLevelStart:
 		drawMolecureCount()
