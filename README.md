@@ -2,7 +2,7 @@
 
 ![Maxwell's Demon](https://github.com/tsujio/game-maxwells-demon/blob/main/image.png?raw=true)
 
-[Play](https://www.tsujio.org/game-maxwells-demon/)
+[Play](https://www.tsujio.org/games/game.html?title=maxwells-demon)
 
 # Credits
 
