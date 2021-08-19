@@ -1,0 +1,51 @@
+body {
+    background: whitesmoke;
+}
+
+a {
+    text-decoration: none;
+    color: dodgerblue;
+}
+
+.container {
+    width: 700px;
+    margin: auto;
+}
+
+.header {
+    margin-top: 2rem;
+    text-align: center;
+}
+
+.header h1 {
+    font-size: 170%;
+}
+
+.game-container {
+    width: 640px;
+    margin: auto;
+}
+
+.game-container iframe{
+    background: black;
+}
+
+.game-container,
+.description-container,
+.link-container {
+    margin-top: 3rem;
+}
+
+.description {
+    background: white;
+    padding: 1rem 2rem;
+    border: 1px solid lightgray;
+    border-radius: 10px;
+    text-align: justify;
+}
+
+.footer {
+    margin-top: 6rem;
+    margin-bottom: 4rem;
+    text-align: center;
+}
