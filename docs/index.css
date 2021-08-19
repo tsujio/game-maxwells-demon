@@ -28,9 +28,6 @@ a {
 
 .game-container iframe {
     width: 100%;
-}
-
-.game-container iframe{
     background: black;
 }
 
