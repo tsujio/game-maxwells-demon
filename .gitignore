@@ -1,3 +1,4 @@
 *.exe
 *.wasm
+*.gz
 resources/**/*.dat

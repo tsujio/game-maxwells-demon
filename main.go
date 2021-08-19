@@ -9,6 +9,7 @@ import (
 	"log"
 	"math"
 	"math/rand"
+	"os"
 	"strconv"
 	"time"
 
@@ -223,14 +224,17 @@ func (g *Game) Update() error {
 			g.playingSec = 0
 		}
 	case GameModePlaying:
-		logging.LogAsync(gameName, map[string]interface{}{
-			"play_id": g.playID,
-			"action":  "playing",
-			"level":   g.level,
-			"ticks":   g.ticksFromModeStart%600 == 0,
-			"low":     g.lowSpeedMoleculeCountInLeftSide,
-			"high":    g.highSpeedMoleculeCountInRightSide,
-		})
+		if g.ticksFromModeStart%600 == 0 {
+			logging.LogAsync(gameName, map[string]interface{}{
+				"play_id": g.playID,
+				"action":  "playing",
+				"level":   g.level,
+				"ticks":   g.ticksFromModeStart,
+				"sec":     time.Now().Unix() - g.playStartTime.Unix(),
+				"low":     g.lowSpeedMoleculeCountInLeftSide,
+				"high":    g.highSpeedMoleculeCountInRightSide,
+			})
+		}
 
 		g.playingSec = int(time.Now().Unix() - g.playStartTime.Unix())
 
@@ -500,6 +504,10 @@ func (g *Game) initialize() {
 }
 
 func main() {
+	if os.Getenv("GAME_LOGGING") != "1" {
+		logging.Disable()
+	}
+
 	ebiten.SetWindowSize(screenWidth, screenHeight)
 	ebiten.SetWindowTitle("Maxwell's Demon")
 
