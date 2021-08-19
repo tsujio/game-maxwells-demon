@@ -12,7 +12,7 @@
         <h1>Maxwell's Demon (2021)</h1>
       </div>
       <div class="game-container">
-        <iframe src="https://www.tsujio.org/games/game.html?title=maxwells-demon&compress=gz&logging=true" width="640" height="480"></iframe>
+        <iframe src="https://www.tsujio.org/games/game.html?title=maxwells-demon&compress=gz&logging=true"></iframe>
       </div>
       <div class="description-container">
         <div class="description">
@@ -32,4 +32,16 @@
       </div>
     </div>
   </body>
+
+  <script>
+    window.onload = () => {
+      const resize = () => {
+        const iframe = document.querySelector("iframe")
+        iframe.style.height = (iframe.clientWidth * 480 / 640) + "px"
+      }
+
+      window.onresize = resize
+      resize()
+    }
+  </script>
 </html>
