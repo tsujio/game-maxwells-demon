@@ -507,6 +507,11 @@ func main() {
 	if os.Getenv("GAME_LOGGING") != "1" {
 		logging.Disable()
 	}
+	if seed, err := strconv.Atoi(os.Getenv("GAME_RAND_SEED")); err == nil {
+		rand.Seed(int64(seed))
+	} else {
+		rand.Seed(time.Now().Unix())
+	}
 
 	ebiten.SetWindowSize(screenWidth, screenHeight)
 	ebiten.SetWindowTitle("Maxwell's Demon")
