@@ -19,9 +19,9 @@ import (
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 	"github.com/hajimehoshi/ebiten/v2/text"
 	logging "github.com/tsujio/game-logging-server/client"
-	"github.com/tsujio/game-maxwells-demon/game-util/dotutil"
-	"github.com/tsujio/game-maxwells-demon/game-util/resourceutil"
-	"github.com/tsujio/game-maxwells-demon/game-util/touchutil"
+	"github.com/tsujio/game-util/dotutil"
+	"github.com/tsujio/game-util/resourceutil"
+	"github.com/tsujio/game-util/touchutil"
 )
 
 const (
@@ -89,6 +89,14 @@ var moleculeDrawingPattern = [][]int{
 	{0, 0, 1, 1, 1, 0, 0},
 }
 
+var highSpeedMoleculeDrawingPattern = dotutil.CreatePatternImage(moleculeDrawingPattern, &dotutil.CreatePatternImageOption{
+	Color: color.RGBA{0xfa, 0x25, 0x58, 0xff},
+})
+
+var lowSpeedMoleculeDrawingPattern = dotutil.CreatePatternImage(moleculeDrawingPattern, &dotutil.CreatePatternImageOption{
+	Color: color.RGBA{0x7a, 0xa4, 0xff, 0xff},
+})
+
 type Molecule struct {
 	speedType MoleculeSpeedType
 	x, y      float64
@@ -102,17 +110,17 @@ func (m *Molecule) move() {
 }
 
 func (m *Molecule) draw(dst *ebiten.Image) {
-	var clr color.Color
+	var img *ebiten.Image
 	switch m.speedType {
 	case MoleculeSpeedHigh:
-		clr = color.RGBA{0xfa, 0x25, 0x58, 0xff}
+		img = highSpeedMoleculeDrawingPattern
 	case MoleculeSpeedLow:
-		clr = color.RGBA{0x7a, 0xa4, 0xff, 0xff}
+		img = lowSpeedMoleculeDrawingPattern
 	}
-	dotutil.DrawPattern(dst, moleculeDrawingPattern, m.x, m.y, &dotutil.DrawPatternOption{
-		DotSize:      float64(m.r*2) / float64(len(moleculeDrawingPattern)),
-		Color:        clr,
-		BasePosition: dotutil.PatternPositionCenter,
+	w, _ := img.Size()
+	dotutil.DrawImage(dst, img, m.x, m.y, &dotutil.DrawImageOption{
+		Scale:        m.r * 2 / float64(w),
+		BasePosition: dotutil.DrawImagePositionCenter,
 	})
 }
 
@@ -312,13 +320,15 @@ func (g *Game) Update() error {
 	return nil
 }
 
-var demonPattern = [][]int{
+var demonPattern = dotutil.CreatePatternImage([][]int{
 	{1, 0, 0, 0, 1},
 	{1, 1, 1, 1, 1},
 	{1, 0, 1, 0, 1},
 	{1, 1, 1, 1, 1},
 	{1, 0, 1, 0, 1},
-}
+}, &dotutil.CreatePatternImageOption{
+	Color: color.RGBA{0xfa, 0x64, 0x81, 0xff},
+})
 
 func (g *Game) Draw(screen *ebiten.Image) {
 	// Background
@@ -328,6 +338,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	// Outer frame
 	drawFrameOpt := &dotutil.DrawLineOption{
 		DotSize:     frameThickness,
+		Interval:    2,
 		DotPosition: dotutil.LineDotPositionRightSide,
 		Color:       color.RGBA{0xe3, 0xa3, 0x66, 0xff},
 	}
@@ -338,8 +349,9 @@ func (g *Game) Draw(screen *ebiten.Image) {
 
 	// Center partition
 	drawPartitionOpt := &dotutil.DrawLineOption{
-		DotSize: frameThickness,
-		Color:   color.RGBA{0xe3, 0xa3, 0x66, 0xff},
+		DotSize:  frameThickness,
+		Interval: 2,
+		Color:    color.RGBA{0xe3, 0xa3, 0x66, 0xff},
 	}
 	dotutil.DrawLine(screen, screenWidth/2, frameTop, screenWidth/2, g.partitionSlitTop, drawPartitionOpt)
 	dotutil.DrawLine(screen, screenWidth/2, frameBottom, screenWidth/2, g.partitionSlitBottom, drawPartitionOpt)
@@ -349,10 +361,10 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	if g.isPartitionSlitOpen {
 		demonY -= partitionSlitSize
 	}
-	dotutil.DrawPattern(screen, demonPattern, screenWidth/2, demonY, &dotutil.DrawPatternOption{
-		DotSize:      float64(partitionSlitSize-10) / float64(len(demonPattern)),
-		BasePosition: dotutil.PatternPositionCenter,
-		Color:        color.RGBA{0xfa, 0x64, 0x81, 0xff},
+	w, _ := demonPattern.Size()
+	dotutil.DrawImage(screen, demonPattern, screenWidth/2, demonY, &dotutil.DrawImageOption{
+		Scale:        float64(partitionSlitSize-10) / float64(w),
+		BasePosition: dotutil.DrawImagePositionCenter,
 	})
 
 	drawMolecules := func() {
