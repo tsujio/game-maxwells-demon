@@ -165,6 +165,7 @@ const (
 )
 
 type Game struct {
+	playerID                                                           string
 	playID                                                             string
 	mode                                                               GameMode
 	ticksFromModeStart                                                 uint64
@@ -220,8 +221,9 @@ func (g *Game) Update() error {
 			audio.NewPlayerFromBytes(audioContext, startAudioData).Play()
 
 			logging.LogAsync(gameName, map[string]interface{}{
-				"play_id": g.playID,
-				"action":  "start_game",
+				"player_id": g.playerID,
+				"play_id":   g.playID,
+				"action":    "start_game",
 			})
 		}
 	case GameModeLevelStart:
@@ -234,13 +236,14 @@ func (g *Game) Update() error {
 	case GameModePlaying:
 		if g.ticksFromModeStart%600 == 0 {
 			logging.LogAsync(gameName, map[string]interface{}{
-				"play_id": g.playID,
-				"action":  "playing",
-				"level":   g.level,
-				"ticks":   g.ticksFromModeStart,
-				"sec":     time.Now().Unix() - g.playStartTime.Unix(),
-				"low":     g.lowSpeedMoleculeCountInLeftSide,
-				"high":    g.highSpeedMoleculeCountInRightSide,
+				"player_id": g.playerID,
+				"play_id":   g.playID,
+				"action":    "playing",
+				"level":     g.level,
+				"ticks":     g.ticksFromModeStart,
+				"sec":       time.Now().Unix() - g.playStartTime.Unix(),
+				"low":       g.lowSpeedMoleculeCountInLeftSide,
+				"high":      g.highSpeedMoleculeCountInRightSide,
 			})
 		}
 
@@ -294,10 +297,11 @@ func (g *Game) Update() error {
 			audio.NewPlayerFromBytes(audioContext, completeAudioData).Play()
 
 			logging.LogAsync(gameName, map[string]interface{}{
-				"play_id": g.playID,
-				"action":  "complete",
-				"level":   g.level,
-				"sec":     g.playingSec,
+				"player_id": g.playerID,
+				"play_id":   g.playID,
+				"action":    "complete",
+				"level":     g.level,
+				"sec":       g.playingSec,
 			})
 		}
 	case GameModeComplete:
@@ -447,9 +451,10 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
 
 func (g *Game) setUpField() {
 	logging.LogAsync(gameName, map[string]interface{}{
-		"play_id": g.playID,
-		"action":  "setup",
-		"level":   g.level,
+		"player_id": g.playerID,
+		"play_id":   g.playID,
+		"action":    "setup",
+		"level":     g.level,
 	})
 
 	moleculeCount := g.level * 5
@@ -524,6 +529,12 @@ func main() {
 	} else {
 		rand.Seed(time.Now().Unix())
 	}
+	playerID := os.Getenv("GAME_PLAYER_ID")
+	if playerID == "" {
+		if playerIDObj, err := uuid.NewRandom(); err == nil {
+			playerID = playerIDObj.String()
+		}
+	}
 
 	ebiten.SetWindowSize(screenWidth, screenHeight)
 	ebiten.SetWindowTitle("Maxwell's Demon")
@@ -537,7 +548,10 @@ func main() {
 
 	}
 
-	game := &Game{playID: playID}
+	game := &Game{
+		playerID: playerID,
+		playID:   playID,
+	}
 	game.initialize()
 
 	if err := ebiten.RunGame(game); err != nil {
