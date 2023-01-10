@@ -257,6 +257,8 @@ github.com/stretchr/testify v1.7.0/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/
 github.com/tmc/grpc-websocket-proxy v0.0.0-20170815181823-89b8d40f7ca8/go.mod h1:ncp9v5uamzpCO7NfCPTXjqaC+bZgJeR0sMTm6dMHP7U=
 github.com/tsujio/game-logging-server/client v0.0.0-20210819010604-02078e15b559 h1:e+Hc6wGEMZcPIdfpy+FFveceOSnJJWCYlzuhtQmh9rM=
 github.com/tsujio/game-logging-server/client v0.0.0-20210819010604-02078e15b559/go.mod h1:HfLj9UswkjpQEPlfiwqpQ04KM7l9FGsVuROdInOsLPU=
+github.com/tsujio/game-logging-server/client v0.0.0-20230108051530-a7e4a1b23b63 h1:GsrGlyozjXoo3sjX04qEYqE02k/Bs87FXlg5mf6FQ5c=
+github.com/tsujio/game-logging-server/client v0.0.0-20230108051530-a7e4a1b23b63/go.mod h1:HfLj9UswkjpQEPlfiwqpQ04KM7l9FGsVuROdInOsLPU=
 github.com/tsujio/game-util v0.0.0-20210826170052-def6e1cbbfeb h1:rp4IyP9Tf6E/J7RNf7oi8Qff3YEhwhWeB6UTLOm2Yuo=
 github.com/tsujio/game-util v0.0.0-20210826170052-def6e1cbbfeb/go.mod h1:02C9VDyrPDOH0KFwiysIaXKWjihSy5H5bsAM8EYzEZ8=
 github.com/urfave/cli v1.20.0/go.mod h1:70zkFmudgCuE/ngEzBv17Jvp/497gISqfk5gWijbERA=
